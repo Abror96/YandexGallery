@@ -36,14 +36,10 @@ public class ImagePagerAdapter extends PagerAdapter {
 
         layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        Log.d("fullimage abror", String.valueOf(position));
-
         View itemView = layoutInflater.inflate(R.layout.custom_swipe_item, container, false);
         ImageView imageView = itemView.findViewById(R.id.fullImage);
         Picasso.get().load(images_list.get(position)).into(imageView);
         container.addView(itemView);
-
-        //((FullImageActivity) ctx).getSupportActionBar().setTitle(position + " из " + images_list.size());
 
         return itemView;
     }

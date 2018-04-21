@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         imagesView.setLayoutManager(new GridLayoutManager(this, 2));
 
         imageItems = new ArrayList<>();
+
+        new ParseTask().execute();
     }
 
 
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String strJson) {
             super.onPostExecute(strJson);
+
 
             JSONObject dataJsonObj = null;
             try {
