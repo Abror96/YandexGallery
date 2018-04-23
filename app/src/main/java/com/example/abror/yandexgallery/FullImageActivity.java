@@ -5,6 +5,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,6 +19,7 @@ public class FullImageActivity extends AppCompatActivity {
     private ViewPager imagePager;
     private ImagePagerAdapter imagePagerAdapter;
 
+    private RelativeLayout mainLayout;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -50,6 +53,14 @@ public class FullImageActivity extends AppCompatActivity {
         });
         imagePager.setAdapter(imagePagerAdapter);
         imagePager.setCurrentItem(image_id);
+
+        mainLayout = findViewById(R.id.fullImageLayout);
+        imagePager.setOnTouchListener(new SwipeListener(this){
+            @Override
+            public void onSwipeTop(){
+                onBackPressed();
+            }
+        });
 
     }
 
