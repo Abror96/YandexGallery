@@ -55,12 +55,6 @@ public class FullImageActivity extends AppCompatActivity {
         imagePager.setCurrentItem(image_id);
 
         mainLayout = findViewById(R.id.fullImageLayout);
-        imagePager.setOnTouchListener(new SwipeListener(this){
-            @Override
-            public void onSwipeTop(){
-                onBackPressed();
-            }
-        });
 
     }
 
