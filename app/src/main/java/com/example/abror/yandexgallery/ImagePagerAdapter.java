@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.github.chrisbanes.photoview.PhotoView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class ImagePagerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View itemView = layoutInflater.inflate(R.layout.custom_swipe_item, container, false);
-        ImageView imageView = itemView.findViewById(R.id.fullImage);
+        PhotoView imageView = itemView.findViewById(R.id.fullImage);
         Picasso.get().load(images_list.get(position)).into(imageView);
         container.addView(itemView);
 
