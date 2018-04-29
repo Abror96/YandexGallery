@@ -8,11 +8,11 @@
     android:layout_height="match_parent"
     tools:context=".FullImageActivity">
 
-    <android.support.v4.view.ViewPager
+    <com.example.abror.yandexgallery.HackyViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/imagesPager">
 
-    </android.support.v4.view.ViewPager>
+    </com.example.abror.yandexgallery.HackyViewPager>
 
 </RelativeLayout>
