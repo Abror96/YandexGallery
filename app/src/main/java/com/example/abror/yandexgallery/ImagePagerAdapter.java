@@ -1,6 +1,7 @@
 package com.example.abror.yandexgallery;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
@@ -9,7 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.github.chrisbanes.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -38,8 +40,18 @@ public class ImagePagerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View itemView = layoutInflater.inflate(R.layout.custom_swipe_item, container, false);
-        PhotoView imageView = itemView.findViewById(R.id.fullImage);
-        Picasso.get().load(images_list.get(position)).into(imageView);
+        ImageView imageView = itemView.findViewById(R.id.fullImage);
+        Picasso.get().load(images_list.get(position)).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                FullImageActivity.mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
         container.addView(itemView);
 
         return itemView;
