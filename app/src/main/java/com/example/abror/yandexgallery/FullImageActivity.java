@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,22 +38,26 @@ public class FullImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_image);
 
+        // вывод всплывающего окна ожидания пока картинка загружается
         mProgressDialog= new ProgressDialog(this);
         mProgressDialog.setTitle("Загрузка изображения");
         mProgressDialog.setMessage("Пожалуйста подождите пока картинка загрузится");
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
 
-        // Заменяем текст в action bar на номер картинки с общим кол-вом картинок
+        // принимаем индекс и url картинок с предыдущего активити при помощи intent extra
         String imageId = getIntent().getStringExtra("imageId");
         int image_id = Integer.parseInt(imageId);
         String listItems = getIntent().getStringExtra("fullImagesList");
+
+        // преобразовываем полученный список url в arraylist
         imagesList = Arrays.asList(listItems.split("\\s*,\\s*"));
 
         ViewPager imagePager = (HackyViewPager) findViewById(R.id.imagesPager);
+        // передаем в адаптер наш массив с url картинок
         ImagePagerAdapter imagePagerAdapter = new ImagePagerAdapter(this, imagesList);
 
-        // изменяем порядковый номер картинки и вставляем общее число картинок
+        // изменяем порядковый номер картинки в action bar и вставляем общее число картинок
         imagePager.addOnPageChangeListener(new ViewPager.OnPageChangeListener(){
 
             @Override
@@ -105,6 +110,7 @@ public class FullImageActivity extends AppCompatActivity {
         Picasso.get().load(url).into(new Target() {
             @Override public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
                 Intent i = new Intent(Intent.ACTION_SEND);
+                i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 i.setType("image/*");
                 i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(bitmap));
                 startActivity(Intent.createChooser(i, "Share Image"));
@@ -121,7 +127,7 @@ public class FullImageActivity extends AppCompatActivity {
             FileOutputStream out = new FileOutputStream(file);
             bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.close();
-            bmpUri = Uri.fromFile(file);
+            bmpUri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".com.example.abror.yandexgallery.provider", file);
         } catch (IOException e) {
             e.printStackTrace();
         }
