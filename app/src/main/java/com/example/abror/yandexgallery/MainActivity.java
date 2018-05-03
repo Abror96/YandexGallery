@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -70,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         imagesRecyclerView = findViewById(R.id.imagesView);
         imagesRecyclerView.setHasFixedSize(true);
+
         num_of_cols = 2;
         imagesRecyclerView.setLayoutManager(new GridLayoutManager(this, num_of_cols));
         imagesRecyclerView.setMotionEventSplittingEnabled(false);
@@ -78,12 +78,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
         noInternetIc = findViewById(R.id.no_internet_ic);
 
-        // вывод окна загрузки пока скачиваются картинки
-        mProgressDialog= new ProgressDialog(this);
-        mProgressDialog.setTitle("Загрузка изображений");
-        mProgressDialog.setMessage("Пожалуйста подождите пока картинки загружаются");
-        mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+        if(isNetworkStatusAvailable (getApplicationContext())) {
+            // вывод окна загрузки пока скачиваются картинки
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setTitle("Загрузка изображений");
+            mProgressDialog.setMessage("Пожалуйста подождите пока картинки загружаются");
+            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog.show();
+        }
 
         // проверка интернет соединения
         checkNetwork();
@@ -108,8 +110,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 return false;
             }
         });
-
-        imagesRecyclerView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
         imagesRecyclerView.setOnTouchListener(new View.OnTouchListener(){
             @Override
@@ -154,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         checkNetwork();
     }
 
+    // выполняем скачивание данных в новом потоке
     private class ParseTask extends AsyncTask<Void, Void, String> {
 
         HttpURLConnection urlConnection = null;

@@ -19,11 +19,12 @@
 
     </android.support.v7.widget.RecyclerView>
 
-        <ImageView
-            android:id="@+id/no_internet_ic"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/no_internet" />
+    <ImageView
+        android:id="@+id/no_internet_ic"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/no_internet"
+        android:contentDescription="@string/no_internet_descr" />
 
     </RelativeLayout>
 
