@@ -40,10 +40,13 @@ public class ImagePagerAdapter extends PagerAdapter {
         layoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View itemView = layoutInflater.inflate(R.layout.custom_swipe_item, container, false);
+
+        // загрузка изображения с url и вставка в imageview посредством библиотеки picasso
         ImageView imageView = itemView.findViewById(R.id.fullImage);
         Picasso.get().load(images_list.get(position)).into(imageView, new Callback() {
             @Override
             public void onSuccess() {
+                // при успешной загрузке убирать окно загрузки progressDialog
                 FullImageActivity.mProgressDialog.dismiss();
             }
 

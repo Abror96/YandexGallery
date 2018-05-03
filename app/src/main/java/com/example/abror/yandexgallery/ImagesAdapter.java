@@ -1,6 +1,5 @@
 package com.example.abror.yandexgallery;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,19 +8,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder> {
 
-    private List<Images> listItems;
-    private Context context;
+    private List<Images> listImageItems;
+    private String fullImagesString;
 
 
-    public ImagesAdapter(List<Images> listItems, Context context) {
-        this.listItems = listItems;
-        this.context = context;
+    public ImagesAdapter(List<Images> listItems, String fullImagesString) {
+        this.listImageItems = listItems;
+        this.fullImagesString = fullImagesString;
     }
 
     @NonNull
@@ -34,24 +34,32 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        final Images imageItem = listItems.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Images imageItem = listImageItems.get(position);
+        final int item_pos = position;
 
-        Picasso.get().load(imageItem.getImage()).centerCrop().fit().into(holder.image);
+        // загружаем картинки в imageview на главной странице
+        Picasso.get().load(imageItem.getImage()).resize(250, 250).centerCrop().into(holder.image, new Callback() {
+            @Override
+            public void onSuccess() {
+                // при успешной загрузке убирать окно загрузки progressDialog
+                MainActivity.mProgressDialog.dismiss();
+            }
 
-        String images_list = "";
-        for (int i = 0; i<listItems.size(); i++) {
-            images_list += listItems.get(i).getImage() + ", ";
-        }
+            @Override
+            public void onError(Exception e) {
 
-        final String finalImages_list = images_list;
+            }
+        });
+
+        // передаем в другое активити список с url картинок
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 Intent imageIntent = new Intent(v.getContext(), FullImageActivity.class);
-                imageIntent.putExtra("imageId", String.valueOf(position));
-                imageIntent.putExtra("image_list", finalImages_list);
+                imageIntent.putExtra("imageId", String.valueOf(item_pos));
+                imageIntent.putExtra("fullImagesList", fullImagesString);
                 v.getContext().startActivity(imageIntent);
             }
         });
@@ -59,7 +67,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return listItems.size();
+        return listImageItems.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
