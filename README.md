@@ -3,6 +3,8 @@ Gallery for Yandex Academy contest
 
 <img src="https://github.com/Abror96/YandexGallery/raw/master/Previews/Screen%201.jpg" width="250" height="500"/><img src="https://github.com/Abror96/YandexGallery/raw/master/Previews/Screen%202.jpg" width="250" height="500"/><img src="https://github.com/Abror96/YandexGallery/raw/master/Previews/Screen%204.jpg" width="250" height="500"/>
 
+[More Screenshots](https://yadi.sk/d/wBPRPglg3VLEZT)
+
 ## Functions
 * loading all photos from Yandex.Images
 * changing number of columns of thumbnails by pinch zooming
